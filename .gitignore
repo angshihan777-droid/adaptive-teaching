@@ -1,0 +1,10 @@
+# Local editor and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Temporary validation and generated artifacts
+*.log
+*.tmp
+__pycache__/

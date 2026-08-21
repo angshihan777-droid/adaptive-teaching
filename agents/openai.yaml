@@ -1,0 +1,4 @@
+interface:
+  display_name: "Adaptive Teaching"
+  short_description: "从项目现象到可迁移知识的中文技术教学"
+  default_prompt: "Use $adaptive-teaching for beginner-friendly Chinese technical teaching: start from an observable project phenomenon, explain general concepts before code, keep one knowledge system per lesson, and let the learner explain the causal chain before advancing."
