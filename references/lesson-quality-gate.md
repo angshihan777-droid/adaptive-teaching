@@ -10,6 +10,16 @@ Run this gate after drafting a guided lesson and repair the draft before sending
 
 If not, narrow the lesson before writing more detail.
 
+## Canonical-Example Fidelity
+
+- Did the draft follow the finished-lesson shape in `正确教学示例.md`, rather than only repeating its abstract principles?
+- Does `本节速览` preview the body’s real conceptual stages?
+- After the opening, are there enough numbered concept sections to define the mechanism’s important parts before source mapping?
+- Does the lesson include a final complete chain that connects generic terms with the project’s concrete evidence?
+- Does the closing state both what was learned and what is deferred, then ask questions that directly follow from the body?
+
+If a draft can be summarized as “a short outline, one generic chain, one code excerpt, and a question,” rewrite it against the canonical example.
+
 ## Causal Teaching
 
 - Does the opening show a feature behavior, not merely a command or file list?

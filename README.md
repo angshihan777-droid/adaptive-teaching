@@ -70,8 +70,11 @@ Adaptive Teaching 把项目当作证据，而不是课堂目录：
 | “为什么”问题可能过早变成学习者作答 | “为什么”只用于建立学习需要；完整通用链和最小例子在提问前完成 |
 | `server.py -> index() -> FileResponse` 容易成为正文结构 | 通用角色与因果链先出现，文件与函数只证明其中的一步 |
 | 依靠教学原则自觉避免跑题 | 使用课堂模板、质量闸门和回归用例检测标题、顺序和边界 |
+| 只有抽象的“正确做法” | 提供一份必须模仿的完整金标准课程，规定成品的章节、密度和收束方式 |
 
 本版的第一响应必须形成一节完整的单概念课，而不是“项目观察 + 开放问题”。课堂末尾才让学习者解释已经教清楚的链路。
+
+`references/正确教学示例.md` 不是理念摘要，而是生成时必须读取和模仿的金标准成品。它用一节完整的 HTTP 课展示：如何写速览、从现象逐步展开术语、构造最小例子、分步映射源码、汇总完整链路、声明边界，以及在最后提出有上下文的检查问题。`错误教学示例.md` 则直接标记不能接受的缩减形态。
 
 ## Core Principles
 
@@ -183,8 +186,8 @@ adaptive-teaching/
 │   ├── ai-practice.md               # AI 协作实践阶段
 │   ├── interview-stage.md           # 目标岗位与面试阶段
 │   ├── skill-design.md              # Skill 的维护与分层原则
-│   ├── 正确教学示例.md              # 正向课堂样例
-│   └── 错误教学示例.md              # 需要避免的课堂模式
+│   ├── 正确教学示例.md              # 必须模仿的完整金标准课程
+│   └── 错误教学示例.md              # 与金标准对照的错误课堂模式
 ├── evals/
 │   └── evals.json                   # 防止课堂退化的回归用例
 ├── CHANGELOG.md
@@ -205,6 +208,8 @@ adaptive-teaching/
     -> references/lesson-workflow.md
     -> references/guided-lesson-template.md
     -> references/lesson-quality-gate.md
+    -> references/正确教学示例.md
+    -> references/错误教学示例.md
 
 当前阶段需要的任务锚点、AI 实践或面试规则
     -> 按需读取对应 reference

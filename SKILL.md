@@ -12,7 +12,7 @@ Teach transferable understanding rather than leading a repository tour. The lear
 ## Route The Request
 
 - **Focused explanation:** answer the named concept directly. Do not force a full project lesson.
-- **Guided project lesson:** read [learner-profile.md](references/learner-profile.md), [lesson-workflow.md](references/lesson-workflow.md), [guided-lesson-template.md](references/guided-lesson-template.md), and [lesson-quality-gate.md](references/lesson-quality-gate.md) before drafting. Read [正确教学示例.md](references/正确教学示例.md) and [错误教学示例.md](references/错误教学示例.md) when an example of the intended contrast is useful.
+- **Guided project lesson:** read [learner-profile.md](references/learner-profile.md), [lesson-workflow.md](references/lesson-workflow.md), [正确教学示例.md](references/正确教学示例.md), [错误教学示例.md](references/错误教学示例.md), [guided-lesson-template.md](references/guided-lesson-template.md), and [lesson-quality-gate.md](references/lesson-quality-gate.md) before drafting. The correct example is the canonical output shape: imitate its heading order, explanatory density, transition logic, concept-to-code mapping, boundaries, and learner handoff. Do not reduce it to a short outline plus questions.
 - **Code walkthrough or debugging:** follow actual inputs, call order, state changes, outputs, and failure evidence. Read the lesson workflow only when teaching is the goal.
 - **Direct delivery:** implement or diagnose as requested; explain only what is needed and do not turn delivery into a lecture.
 
@@ -40,6 +40,26 @@ This prevents a project tour from masquerading as a concept lesson.
 8. End with 1-3 learner questions that test a causal chain already taught. Let the learner explain before supplying a standard answer.
 9. Distinguish `[To understand]`, `[Explained]`, `[Practiced]`, and `[Verified]` when status helps; never call a concept mastered because it was mentioned.
 
+## Canonical Output Shape
+
+For a substantial first lesson, generate the same *kind* of finished lesson as [正确教学示例.md](references/正确教学示例.md), adapted to the current concept and project facts. Do not merely mention the stages or give an abbreviated scaffold.
+
+The response must normally contain these parts in this order:
+
+```text
+concept title
+    -> 本节速览: the learner can see today’s conceptual map before details
+    -> 课前引入: observable behavior, prior knowledge, missing capability, why-question
+    -> numbered concept sections: definition, role, components, and boundaries
+    -> one smallest complete example, including normal and useful failure behavior
+    -> numbered project mapping: each stage tied to a limited source excerpt
+    -> current complete chain: generic terms and project terms mapped together
+    -> 当前学习边界: what was learned and what is deliberately deferred
+    -> 1-3 causal learner questions, followed by the natural next lesson
+```
+
+Use short paragraphs, arrow chains, small tables, and focused code excerpts exactly when they clarify a causal step. Explain why each code excerpt matters before or immediately after showing it. Match the standard example’s progressive depth: do not replace explanations with headings, bullet labels, or code identifiers.
+
 ## Required Boundaries
 
 - Use a concrete title such as `【HTTP】请求、响应、JSON 与状态码`; do not title a lesson as a technology stack, a vague cooperation question, or an execution report.
@@ -47,6 +67,8 @@ This prevents a project tour from masquerading as a concept lesson.
 - Do not assume a folder name, port, log line, framework name, or file extension is self-explanatory to a beginner.
 - Do not begin with repository inventories, dependency versions, health checks, file responsibility summaries, or raw terminal output.
 - Do not end a first teaching response immediately after asking “why”. The why-question creates the need for the lesson; it is not a replacement for the lesson.
+- Do not treat `本节速览` as a list of labels. It must preview the actual conceptual stages that the body will teach.
+- Do not produce a thin lesson with only a title, a generic chain, one code excerpt, and questions when the subject requires definitions, components, examples, project mapping, and a final mapped chain. Follow the canonical example’s finished-lesson depth.
 - Do not ask the learner to explain a causal chain that has not yet been supplied in generic form.
 - Do not use source identifiers as the lesson outline. A sequence such as `server.py -> index() -> FileResponse` is evidence only after the learner understands the generic responsibility chain.
 - Do not silently expand the lesson into API calls, SSE, Agent loops, RAG, UI components, or algorithms merely because the project contains them.
