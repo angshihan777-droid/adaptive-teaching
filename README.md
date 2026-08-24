@@ -57,6 +57,7 @@ Adaptive Teaching 把项目当作证据，而不是课堂目录：
 | 默认学习者认识端口、框架和日志 | 把观察和技术解释明确分开 |
 | 看到代码就逐行讲 | 先讲通用概念，再用代码验证 |
 | 一章同时深挖 FastAPI、React、HTTP 和 Agent | 一章只深入一个知识系统 |
+| 把多个知识点并列成术语清单 | 说明前一个知识为什么引出下一个知识 |
 | 代码调用顺序充当解释 | 代码调用顺序只作为已学概念的证据 |
 | 以“代码写完”作为学习完成 | 以学习者能解释、应用和验证作为证据 |
 
@@ -112,6 +113,19 @@ Bad: 为什么 server.py 能显示网页？
 ### One system per lesson
 
 整体协作关系可以展示，但一章只深入一个知识系统。比如 FastAPI 课可以说它把网页文件交给浏览器；浏览器如何组织组件树，留给独立的前端课。
+
+### Connect concepts with transitions
+
+一节课不能只是把几个定义依次排列。每讲完一个主要概念，都要说明：它已经解释了什么、还留下什么问题，以及下一个概念为什么正好解决这个问题。
+
+```text
+A 已经解释了什么
+    -> A 还不能解释什么
+    -> B 为什么是解决这个缺口的下一步
+    -> 进入 B
+```
+
+过渡可以是知识依赖、因果流程、项目证据或范围边界。只有宣布“下面讲 B”而没有说明必要性的句子，不算教学过渡。
 
 ### Learner takes the turn last
 
@@ -180,6 +194,7 @@ adaptive-teaching/
 │   ├── learner-profile.md           # 学习者特点与教学偏好
 │   ├── lesson-workflow.md           # 从选定知识系统到学习者复述的课堂流程
 │   ├── guided-lesson-template.md    # 第一响应的完整单概念课模板
+│   ├── transition-design.md         # 主要概念之间的因果过渡规则
 │   ├── lesson-quality-gate.md       # 标题、顺序、边界和提问时机的质量闸门
 │   ├── task-anchor.md               # 当前课程目标、边界和完成证据
 │   ├── classroom-harness.md         # 课堂行为自检
@@ -207,6 +222,7 @@ adaptive-teaching/
     -> references/learner-profile.md
     -> references/lesson-workflow.md
     -> references/guided-lesson-template.md
+    -> references/transition-design.md
     -> references/lesson-quality-gate.md
     -> references/正确教学示例.md
     -> references/错误教学示例.md
@@ -248,6 +264,7 @@ python <skill-creator>/scripts/quick_validate.py <path-to-adaptive-teaching>
 - 标题是否明确写出本节唯一的知识点？
 - 课前现象是否为可见功能行为，并说明了它缺少的能力？
 - 是否先讲完整通用因果链和最小例子，再出现代码标识符？
+- 主要概念之间是否有说明“为什么从 A 进入 B”的有效过渡？
 - 是否明确排除了相邻知识系统？
 - 是否在教学完成后才让学习者解释已讲过的因果链？
 - 项目代码是否真正验证了前面讲过的概念？

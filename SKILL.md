@@ -1,6 +1,6 @@
 ---
 name: adaptive-teaching
-description: Chinese beginner-friendly technical teaching through real projects. Use whenever the user asks to learn, resume a course, understand a repository, or be taught a technical topic. Build a complete single-concept lesson: observable feature behavior, a concrete why-question, generic causal chain, minimal example, code evidence, explicit boundary, then a learner explanation check. Do not substitute a project tour or an early open question for the lesson.
+description: "Chinese beginner-friendly technical teaching through real projects. Use whenever the user asks to learn, resume a course, understand a repository, or be taught a technical topic. Build a complete single-concept lesson: observable feature behavior, a concrete why-question, generic causal chain, minimal example, code evidence, explicit boundary, then a learner explanation check. Do not substitute a project tour or an early open question for the lesson."
 ---
 
 # Adaptive Teaching
@@ -12,7 +12,7 @@ Teach transferable understanding rather than leading a repository tour. The lear
 ## Route The Request
 
 - **Focused explanation:** answer the named concept directly. Do not force a full project lesson.
-- **Guided project lesson:** read [learner-profile.md](references/learner-profile.md), [lesson-workflow.md](references/lesson-workflow.md), [正确教学示例.md](references/正确教学示例.md), [错误教学示例.md](references/错误教学示例.md), [guided-lesson-template.md](references/guided-lesson-template.md), and [lesson-quality-gate.md](references/lesson-quality-gate.md) before drafting. The correct example is the canonical output shape: imitate its heading order, explanatory density, transition logic, concept-to-code mapping, boundaries, and learner handoff. Do not reduce it to a short outline plus questions.
+- **Guided project lesson:** read [learner-profile.md](references/learner-profile.md), [lesson-workflow.md](references/lesson-workflow.md), [正确教学示例.md](references/正确教学示例.md), [错误教学示例.md](references/错误教学示例.md), [guided-lesson-template.md](references/guided-lesson-template.md), [transition-design.md](references/transition-design.md), and [lesson-quality-gate.md](references/lesson-quality-gate.md) before drafting. The correct example is the canonical output shape: imitate its heading order, explanatory density, transition logic, concept-to-code mapping, boundaries, and learner handoff. Do not reduce it to a short outline plus questions.
 - **Code walkthrough or debugging:** follow actual inputs, call order, state changes, outputs, and failure evidence. Read the lesson workflow only when teaching is the goal.
 - **Direct delivery:** implement or diagnose as requested; explain only what is needed and do not turn delivery into a lecture.
 
@@ -37,8 +37,10 @@ This prevents a project tour from masquerading as a concept lesson.
 5. Use a smallest useful example that preserves today's causal mechanism but removes project-specific complexity. Explain the example before source code.
 6. Map generic roles to real files only after they have clear conceptual slots. Trace the actual call/data chain and label verified facts separately from assumptions. Code is evidence, not the lesson's starting language.
 7. State both the normal path and one meaningful failure boundary when the topic naturally has one. Separate transport success from the user's business outcome where relevant.
-8. End with 1-3 learner questions that test a causal chain already taught. Let the learner explain before supplying a standard answer.
-9. Distinguish `[To understand]`, `[Explained]`, `[Practiced]`, and `[Verified]` when status helps; never call a concept mastered because it was mentioned.
+8. Connect every major section with an explicit transition. After teaching A, state what A now explains, what question or limitation remains, and why B is the next concept that answers it. Do not place concepts side by side as an unconnected glossary.
+9. Use the right transition for the situation: knowledge dependency (`A is needed before B`), causal flow (`A produces the input B needs`), project evidence (`the project now shows B at this exact boundary`), or scope boundary (`B is related but deferred`).
+10. End with 1-3 learner questions that test a causal chain already taught. Let the learner explain before supplying a standard answer.
+11. Distinguish `[To understand]`, `[Explained]`, `[Practiced]`, and `[Verified]` when status helps; never call a concept mastered because it was mentioned.
 
 ## Canonical Output Shape
 
@@ -60,6 +62,27 @@ concept title
 
 Use short paragraphs, arrow chains, small tables, and focused code excerpts exactly when they clarify a causal step. Explain why each code excerpt matters before or immediately after showing it. Match the standard example’s progressive depth: do not replace explanations with headings, bullet labels, or code identifiers.
 
+### Transition requirement
+
+The lesson must read as a connected explanation, not a sequence of independent sections. Before each new major concept, include a short bridge with this logic:
+
+```text
+我们已经知道 A
+    -> A 仍然不能解释/完成 X
+    -> B 正好解决 X
+    -> 所以下面学习 B
+```
+
+The bridge must name the relationship in plain language. For example:
+
+```text
+FastAPI 是 Web 框架，说明它负责统一处理 Web 工作；
+但我们还不知道它把一个具体请求交给哪个函数。
+因此下一步学习 app 和 path operation，它们描述这条“请求 -> 函数”的关系。
+```
+
+Do not use empty transitions such as “接下来我们看看另一个概念” or “下面继续学习相关内容”. If the next concept does not naturally follow, split the lesson or state the scope boundary instead.
+
 ## Required Boundaries
 
 - Use a concrete title such as `【HTTP】请求、响应、JSON 与状态码`; do not title a lesson as a technology stack, a vague cooperation question, or an execution report.
@@ -70,6 +93,8 @@ Use short paragraphs, arrow chains, small tables, and focused code excerpts exac
 - Do not treat `本节速览` as a list of labels. It must preview the actual conceptual stages that the body will teach.
 - Do not produce a thin lesson with only a title, a generic chain, one code excerpt, and questions when the subject requires definitions, components, examples, project mapping, and a final mapped chain. Follow the canonical example’s finished-lesson depth.
 - Do not ask the learner to explain a causal chain that has not yet been supplied in generic form.
+- Do not present three or more major concepts as parallel definitions without explicit bridges showing their dependency, causal order, or boundary.
+- Do not use a transition sentence that merely announces the next heading; it must explain why the next concept is needed.
 - Do not use source identifiers as the lesson outline. A sequence such as `server.py -> index() -> FileResponse` is evidence only after the learner understands the generic responsibility chain.
 - Do not silently expand the lesson into API calls, SSE, Agent loops, RAG, UI components, or algorithms merely because the project contains them.
 - Do not give a polished AI implementation prompt before the learner has described the task and its likely ambiguities.
@@ -103,6 +128,7 @@ Before claiming a lesson segment is complete, confirm:
 - the title names one transferable knowledge system rather than a technology stack, file path, or vague question;
 - the opening behavior produces a specific missing-capability question;
 - the generic causal chain and minimal example appear before source identifiers;
+- each major concept is connected to the previous one by a meaningful transition that names the unresolved question or dependency;
 - the project mapping proves the already-explained chain rather than replacing it;
 - a normal path, applicable failure boundary, and out-of-scope systems are explicit;
 - the learner has a chance to explain a chain that was actually taught;

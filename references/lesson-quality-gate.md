@@ -26,6 +26,8 @@ If a draft can be summarized as “a short outline, one generic chain, one code 
 - Does it identify the missing capability that makes the why-question necessary?
 - Does the generic chain cover input, processing, output, actors, and boundaries appropriate to this topic?
 - Is there a minimal example that could survive if all project names were removed?
+- Does each major concept follow from the previous one through an explicit dependency, causal, project, or scope-boundary transition?
+- Does every transition explain why the next concept is needed, rather than merely announcing the next heading?
 
 If the learner would need to guess the generic chain, the lesson is still a project prompt, not teaching.
 
@@ -50,6 +52,7 @@ Rewrite the lesson when any of these occurs:
 It starts with “run this command” and immediately asks the learner to explain everything.
 It uses a broad title because the actual concept was not selected.
 It gives only a sequence of files/functions where a causal explanation should be.
+It presents major concepts as a glossary without explaining how one creates the need for the next.
 It calls a question a lesson and stops before teaching the mechanism.
 It introduces multiple systems because the project contains them.
 ```

@@ -25,6 +25,9 @@ the data or object crossing the boundary, and what the next actor does with it.>
 <Introduce each new term in this order: problem solved -> plain-language meaning
 -> position in the chain -> precise term.>
 
+<Before each major concept, add a bridge explaining what the previous concept
+already established, what remains unresolved, and why this concept is next.>
+
 ## 最小例子
 
 <Use a small, non-project-specific example that preserves the causal mechanism.>
