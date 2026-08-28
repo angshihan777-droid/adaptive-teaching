@@ -1,288 +1,119 @@
-<p align="center">
-  <img src="https://img.shields.io/badge/Codex-Skill-111827?style=for-the-badge&logo=openai&logoColor=white" alt="Codex Skill">
-  <img src="https://img.shields.io/badge/Language-Chinese-2563eb?style=for-the-badge" alt="Chinese">
-  <img src="https://img.shields.io/badge/Learner-Beginner-16a34a?style=for-the-badge" alt="Beginner friendly">
-</p>
+# 自适应项目教学
 
-<h1 align="center">Adaptive Teaching</h1>
+面向中文初学者的 Codex 教学 Skill。它把真实项目当作学习材料，帮助学习者沿着代码调用链理解概念、运行验证、调试和复述，而不是把文件清单或逐行翻译当成课程。
 
-<p align="center"><strong>先选定一个知识系统，再把项目现象转换成可迁移的因果理解。</strong></p>
+## 它解决什么问题
 
-<p align="center">
-  一套面向中文初学者的 Codex 教学 Skill。<br>
-  它不把项目导览冒充成教学：先完成一节单概念课，再用真实代码验证理解。
-</p>
-
-<p align="center">
-  <a href="#quick-start">快速开始</a> ·
-  <a href="#what-changed-in-this-version">本版变化</a> ·
-  <a href="#teaching-loop">教学循环</a> ·
-  <a href="#verification">验证方式</a>
-</p>
-
-<p align="center">
-  <a href="https://github.com/angshihan777-droid/adaptive-teaching/stargazers">
-    <img alt="GitHub stars" src="https://img.shields.io/github/stars/angshihan777-droid/adaptive-teaching?style=flat&logo=github">
-  </a>
-  <a href="LICENSE">
-    <img alt="License" src="https://img.shields.io/github/license/angshihan777-droid/adaptive-teaching?style=flat">
-  </a>
-</p>
-
-## Why
-
-很多项目教学从文件清单、框架名称和代码逐行解释开始。初学者因此需要先猜测一整个系统，再被告知名词和结论；即使项目能运行，也没有形成可迁移的因果理解。
-
-Adaptive Teaching 把项目当作证据，而不是课堂目录：
+项目代码经常是这样一层层连接的：
 
 ```text
-选择唯一知识系统与标题
-    -> 可见功能行为
-    -> 缺失能力与“为什么”
-    -> 完整通用因果链
-    -> 最小例子
-    -> 真实代码证据
-    -> 正常路径、失败边界与非目标
-    -> 学习者用自己的话解释
+正在学习的函数
+-> 调用了另一个函数
+-> 另一个函数依赖配置或工具
+-> 必须进入相关文件继续理解
 ```
 
-项目是实践载体，技术理解才是目标，AI 只是辅助工具。
+这种深入方式能接近真实工程，但也容易让学习者忘记最初的问题。本 Skill 要求在每条局部链路讲到可以收束时，用大白话把线索带回主线，说明已经学会什么、还没学什么，以及下一步回到哪里。
 
-## What Changes
+## 核心教学方式
 
-| 普通代码讲解 | Adaptive Teaching |
-|---|---|
-| 先列出目录和文件职责 | 先从学习者能看见的功能行为提出问题 |
-| 把“为什么”当作课堂结束时的提问 | 把“为什么”作为教学起点，随后给出完整机制 |
-| 默认学习者认识端口、框架和日志 | 把观察和技术解释明确分开 |
-| 看到代码就逐行讲 | 先讲通用概念，再用代码验证 |
-| 一章同时深挖 FastAPI、React、HTTP 和 Agent | 一章只深入一个知识系统 |
-| 把多个知识点并列成术语清单 | 说明前一个知识为什么引出下一个知识 |
-| 代码调用顺序充当解释 | 代码调用顺序只作为已学概念的证据 |
-| 以“代码写完”作为学习完成 | 以学习者能解释、应用和验证作为证据 |
-
-## What Changed In This Version
-
-这一版不只是补充了“现象优先、概念先于代码”的原则，而是把它变成可执行、可检查的课堂结构。它专门修复两类课堂退化：标题无法说明到底在学什么，以及提出一个“为什么”后就把完整推理任务交给初学者。
-
-| 旧版倾向 | 当前版本 |
-|---|---|
-| 从项目现象开始，但可能没有先确定本节知识对象 | 先选择唯一知识系统、标题、可见行为、缺失能力和非目标 |
-| “为什么”问题可能过早变成学习者作答 | “为什么”只用于建立学习需要；完整通用链和最小例子在提问前完成 |
-| `server.py -> index() -> FileResponse` 容易成为正文结构 | 通用角色与因果链先出现，文件与函数只证明其中的一步 |
-| 依靠教学原则自觉避免跑题 | 使用课堂模板、质量闸门和回归用例检测标题、顺序和边界 |
-| 只有抽象的“正确做法” | 提供一份必须模仿的完整金标准课程，规定成品的章节、密度和收束方式 |
-
-本版的第一响应必须形成一节完整的单概念课，而不是“项目观察 + 开放问题”。课堂末尾才让学习者解释已经教清楚的链路。
-
-`references/正确教学示例.md` 不是理念摘要，而是生成时必须读取和模仿的金标准成品。它用一节完整的 HTTP 课展示：如何写速览、从现象逐步展开术语、构造最小例子、分步映射源码、汇总完整链路、声明边界，以及在最后提出有上下文的检查问题。`错误教学示例.md` 则直接标记不能接受的缩减形态。
-
-## Core Principles
-
-### Choose the concept before the lesson
-
-先从项目证据中确定这一节只教哪一套可迁移知识，再写标题。标题必须让学习者在不知道仓库文件名的情况下，也能判断会学到什么。
+每个知识点按三关推进：
 
 ```text
-Good: 【HTTP】请求、响应与前后端数据传递
-Good: 【Web 应用】浏览器、服务程序与网页文件的分工
-Bad: FastAPI + React 启动流程
-Bad: 为什么 server.py 能显示网页？
+教学阶段 -> 源码阶段 -> 面试阶段 -> 知识点通关
 ```
 
-“页面能出现”和“点击后数据怎样传递”可以出现在同一个项目，却属于不同的课堂。
+### 先讲清楚问题
 
-### Feature behavior first
+- 先从可观察的功能行为或当前代码问题开始。
+- 说明它解决什么工程问题，以及本节只学哪一个知识系统。
+- 先给白话概念和最小例子，再用真实项目代码验证。
 
-每章从学习者能直接做或看见的功能行为开始，例如点击按钮后页面显示结果。接着说明：这个页面或程序本身缺少什么能力，因此才产生“为什么”。命令、目录和框架名称不是默认开场；只有当它们本身就是本节对象时才使用。
+### 顺着调用链深入
 
-### Concept before code
+- 当前函数调用了必须理解的函数，就进入那个函数。
+- 函数又依赖其他文件中的对象、配置或工具，就继续进入。
+- 按真实源码顺序讲，不为了维持单文件讲解而跳过中间代码。
+- 每段代码说明作用、输入、输出、调用者和失败边界。
 
-陌生术语按以下顺序进入课堂：
+### 每次深入后收回来
 
-```text
-它解决什么眼前问题
-    -> 白话定义
-    -> 它在当前链路的哪一步
-    -> 一个最小例子
-    -> 准确的技术名称和项目证据
+局部链路讲完后，使用这个标题：
+
+```markdown
+## 这次我们串起来了什么？
 ```
 
-完整的通用因果链与最小例子必须都在源码标识符之前出现。学习者不应该先猜整个系统，再得到答案。
+用短段落或 Markdown 分点说明：
 
-### One system per lesson
+- 我们原本在看什么；
+- 为什么必须进入另一个函数或文件；
+- 这次具体连起了哪些职责；
+- 回到主线后，现在能解释什么；
+- 哪些函数或文件范围还没学；
+- 下一步从哪里继续。
 
-整体协作关系可以展示，但一章只深入一个知识系统。比如 FastAPI 课可以说它把网页文件交给浏览器；浏览器如何组织组件树，留给独立的前端课。
+“学过 `db.py` 里的 `init_db()`”不等于“学完 `db.py`”。教学必须精确到函数、代码段或职责。
 
-### Connect concepts with transitions
+## 课程结束标准
 
-一节课不能只是把几个定义依次排列。每讲完一个主要概念，都要说明：它已经解释了什么、还留下什么问题，以及下一个概念为什么正好解决这个问题。
+一个知识点不能因为“讲过”就算完成。需要同时具备：
 
-```text
-A 已经解释了什么
-    -> A 还不能解释什么
-    -> B 为什么是解决这个缺口的下一步
-    -> 进入 B
-```
+- 概念已经解释；
+- 真实源码调用链已经追踪；
+- 有运行、日志、截图、测试或复述证据；
+- 完成当前知识点的项目面试问题。
 
-过渡可以是知识依赖、因果流程、项目证据或范围边界。只有宣布“下面讲 B”而没有说明必要性的句子，不算教学过渡。
+一个节点的知识点全部完成后，再做节点总结，串联完整链路、正常路径、失败路径和工程复盘。
 
-### Learner takes the turn last
+## 适合什么时候使用
 
-讲完概念、最小例子和有限的项目证据后，才让学习者用自己的话解释输入、输出、调用顺序、责任边界和失败情况。问题只检查课堂已经教过的因果链。
+- 继续学习一个真实代码仓库；
+- 从浏览器、接口或终端现象追到后端源码；
+- 理解跨文件调用、数据转换和生命周期；
+- 学习 FastAPI、HTTP、前端、Agent 或数据库在项目中的职责；
+- 通过运行结果、日志和失败现象练习定位问题；
+- 为目标岗位准备基于项目证据的面试表达。
 
-## Teaching Loop
+## 不做什么
 
-```mermaid
-flowchart LR
-    A[选择单一知识系统与标题] --> B[项目中的可见功能行为]
-    B --> C[缺失能力与白话为什么]
-    C --> D[完整通用因果链]
-    D --> E[最小例子]
-    E --> F[真实代码证据]
-    F --> G[边界与非目标]
-    G --> H[学习者复述]
-    H --> I{理解证据足够?}
-    I -->|否| D
-    I -->|是| J[实践、运行与验证]
-```
+- 不把目录导览当成教学；
+- 不用函数调用顺序替代概念解释；
+- 不要求学习者猜尚未讲过的完整链路；
+- 不在一节课里同时深挖多个技术系统；
+- 不把一个文件的一小段内容说成整个文件已经学完；
+- 不擅自修改学习者的学习计划、课程笔记或项目顺序。
 
-简单问题可以压缩；难点必须补回缺失的中间环节。
+## 在 Codex 中使用
 
-## Quick Start
-
-### Install or clone
-
-在 Codex 中使用本地 Skill：
+将仓库放入 Codex Skills 目录：
 
 ```bash
 git clone https://github.com/angshihan777-droid/adaptive-teaching.git \
   "$CODEX_HOME/skills/adaptive-teaching"
 ```
 
-如果当前环境已经配置了 Codex Skills，也可以把仓库内容放到：
+开始或继续学习时，可以这样说：
 
 ```text
-~/.codex/skills/adaptive-teaching/
+使用 $adaptive-teaching，读取我的学习计划和当前进度，继续从上次停下的源码调用链教学。
+我是初学者，请顺着真实代码深入；每次深入完成后，用“这次我们串起来了什么？”把主线收回来。
 ```
 
-### Start a lesson
-
-```text
-使用 $adaptive-teaching，按照下面的学习计划继续教学：
-
-<学习计划路径>
-
-我是初学者。请先读取学习计划和当前进度，再从项目中能直接看到的功能行为开始。
-先确定本节唯一的知识系统和标题；先讲完整通用概念与最小例子，再用真实代码验证。
-```
-
-### Continue a lesson
-
-```text
-使用 $adaptive-teaching，继续上一节。
-请先读取当前学习进度，保持“功能行为 -> 缺失能力 -> 通用因果链 -> 最小例子 -> 代码证据 -> 学习者复述”的顺序。
-```
-
-## Folder Layout
+## 文件结构
 
 ```text
 adaptive-teaching/
-├── SKILL.md                         # 触发条件、路由与核心课堂约束
-├── agents/openai.yaml               # Codex 界面元数据和默认提示
-├── references/
-│   ├── learner-profile.md           # 学习者特点与教学偏好
-│   ├── lesson-workflow.md           # 从选定知识系统到学习者复述的课堂流程
-│   ├── guided-lesson-template.md    # 第一响应的完整单概念课模板
-│   ├── transition-design.md         # 主要概念之间的因果过渡规则
-│   ├── lesson-quality-gate.md       # 标题、顺序、边界和提问时机的质量闸门
-│   ├── task-anchor.md               # 当前课程目标、边界和完成证据
-│   ├── classroom-harness.md         # 课堂行为自检
-│   ├── ai-practice.md               # AI 协作实践阶段
-│   ├── interview-stage.md           # 目标岗位与面试阶段
-│   ├── skill-design.md              # Skill 的维护与分层原则
-│   ├── 正确教学示例.md              # 必须模仿的完整金标准课程
-│   └── 错误教学示例.md              # 与金标准对照的错误课堂模式
-├── evals/
-│   └── evals.json                   # 防止课堂退化的回归用例
-├── CHANGELOG.md
+├── SKILL.md                         # 触发条件和教学规则
+├── references/                      # 课堂流程、模板、边界和质量检查
+├── evals/evals.json                 # 回归用例
+├── CHANGELOG.md                     # 版本和规则变更记录
 ├── LICENSE
 └── README.md
 ```
 
-## Progressive Disclosure
+详细规则以 [SKILL.md](SKILL.md) 为准；课堂参考资料位于 [references](references/)。
 
-`SKILL.md` 是导航中心，不是百科全书。
+## 许可证
 
-```text
-始终需要的触发和边界
-    -> SKILL.md
-
-当前完整课堂需要的学习者画像、流程、模板和质量闸门
-    -> references/learner-profile.md
-    -> references/lesson-workflow.md
-    -> references/guided-lesson-template.md
-    -> references/transition-design.md
-    -> references/lesson-quality-gate.md
-    -> references/正确教学示例.md
-    -> references/错误教学示例.md
-
-当前阶段需要的任务锚点、AI 实践或面试规则
-    -> 按需读取对应 reference
-```
-
-## Scope And Boundaries
-
-适合：
-
-- 通过真实仓库学习后端、前端、HTTP、Agent 和工程实践
-- 初学者概念解释和代码调用链追踪
-- 在学习基础上进行小范围 AI 辅助实践
-- 课程阶段总结、理解检查和目标岗位面试练习
-
-不自动做：
-
-- 把目录清单当成教学
-- 把一个“为什么”问题当成完整课程
-- 要求初学者解释尚未教过的整条因果链
-- 用函数或文件调用顺序替代概念解释
-- 未经请求修改长期学习路线
-- 在一节课里同时深挖多个技术系统
-- 把“项目能运行”当成“学习者已经理解”
-
-## Verification
-
-Skill 结构校验：
-
-```powershell
-$env:PYTHONUTF8 = "1"
-python <skill-creator>/scripts/quick_validate.py <path-to-adaptive-teaching>
-```
-
-课堂行为校验重点：
-
-- 标题是否明确写出本节唯一的知识点？
-- 课前现象是否为可见功能行为，并说明了它缺少的能力？
-- 是否先讲完整通用因果链和最小例子，再出现代码标识符？
-- 主要概念之间是否有说明“为什么从 A 进入 B”的有效过渡？
-- 是否明确排除了相邻知识系统？
-- 是否在教学完成后才让学习者解释已讲过的因果链？
-- 项目代码是否真正验证了前面讲过的概念？
-
-回归用例位于 `evals/evals.json`。它以 `suan` 项目的首课为例，检查结果不会退化为“启动命令 + 开放问题”或“文件调用序列”。
-
-## Design Note
-
-这套 Skill 遵循三个维护层：
-
-```text
-Prompt  -> 定义老师怎么教
-Context -> 提供学习者、课程和项目背景
-Harness -> 检查老师有没有按约定教学
-```
-
-结构可以复用，内容必须从当前项目重新生成。
-
-## License
-
-MIT License. See [LICENSE](LICENSE).
+MIT License，见 [LICENSE](LICENSE)。

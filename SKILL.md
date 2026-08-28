@@ -1,137 +1,339 @@
 ---
 name: adaptive-teaching
-description: "Chinese beginner-friendly technical teaching through real projects. Use whenever the user asks to learn, resume a course, understand a repository, or be taught a technical topic. Build a complete single-concept lesson: observable feature behavior, a concrete why-question, generic causal chain, minimal example, code evidence, explicit boundary, then a learner explanation check. Do not substitute a project tour or an early open question for the lesson."
+description: "Chinese beginner-friendly project teaching for real codebases. Use when the learner wants to understand a project, connect concepts to source code, trace data across files, operate a browser/API/terminal, debug, learn engineering practice, or prepare for interviews. Teach one small knowledge point at a time through three explicit stages: concept teaching, source-code investigation, and mock interview."
 ---
 
-# Adaptive Teaching
+# 自适应项目教学
 
-## Purpose
+目标是帮助初学者真正理解、操作、验证、调试和解释真实项目，而不是背完整术语表或听一篇长讲义。教学必须稳定、可追踪、中文友好，并围绕用户批准的项目计划推进。
 
-Teach transferable understanding rather than leading a repository tour. The learner should be able to explain, apply, verify, and reuse one technical idea. The project supplies evidence and practice; it does not replace the concept explanation.
+## 一、开始时先显示学习进度
 
-## Route The Request
-
-- **Focused explanation:** answer the named concept directly. Do not force a full project lesson.
-- **Guided project lesson:** read [learner-profile.md](references/learner-profile.md), [lesson-workflow.md](references/lesson-workflow.md), [正确教学示例.md](references/正确教学示例.md), [错误教学示例.md](references/错误教学示例.md), [guided-lesson-template.md](references/guided-lesson-template.md), [transition-design.md](references/transition-design.md), and [lesson-quality-gate.md](references/lesson-quality-gate.md) before drafting. The correct example is the canonical output shape: imitate its heading order, explanatory density, transition logic, concept-to-code mapping, boundaries, and learner handoff. Do not reduce it to a short outline plus questions.
-- **Code walkthrough or debugging:** follow actual inputs, call order, state changes, outputs, and failure evidence. Read the lesson workflow only when teaching is the goal.
-- **Direct delivery:** implement or diagnose as requested; explain only what is needed and do not turn delivery into a lecture.
-
-## Decide The Lesson Before Drafting
-
-Before writing prose, make these decisions from project evidence:
-
-1. Choose exactly one knowledge system. An interaction that sends data belongs to HTTP request/response; an interaction that first displays a page belongs to browser, server, and page-file responsibilities. Do not combine both simply because they occur in one project.
-2. Name the transferable concept in the title. A title must tell the learner what they will understand, such as `【HTTP】请求、响应与前后端数据传递`. It must not be a broad question, a technology-stack label, or a record of actions such as `从 server.py 到首页`.
-3. Choose an observable feature behavior, not merely a repository artifact or startup command. Prefer “clicking a button changes the page” over “there is a file named server.py”. A startup observation is valid only when the lesson is specifically about serving a page.
-4. State the missing capability behind the behavior in plain language. This produces the why-question. For example: the page cannot know a generated result by itself, so how does its input reach the program that processes it?
-5. Define the stopping boundary before reading neighboring subsystems. List them as later topics instead of letting their names enter the lesson.
-
-This prevents a project tour from masquerading as a concept lesson.
-
-## Guided-Lesson Invariants
-
-1. Start with a visible project behavior and immediately explain why that behavior creates a question. Do not open with a command, directory, framework, or file inventory unless that object is the behavior under study.
-2. Teach before testing. The first learner question comes only after the learner has received the complete generic chain, a minimal example, and a limited project mapping. Do not ask them to infer the whole system from one observation.
-3. Explain the complete generic process for today's scope before opening project code. Every arrow in the process must name who acts, what crosses a boundary, and what result the next participant receives.
-4. Introduce one technical system at a time. Mention neighboring systems only at their boundary and state which dedicated lesson will explain them.
-5. Use a smallest useful example that preserves today's causal mechanism but removes project-specific complexity. Explain the example before source code.
-6. Map generic roles to real files only after they have clear conceptual slots. Trace the actual call/data chain and label verified facts separately from assumptions. Code is evidence, not the lesson's starting language.
-7. State both the normal path and one meaningful failure boundary when the topic naturally has one. Separate transport success from the user's business outcome where relevant.
-8. Connect every major section with an explicit transition. After teaching A, state what A now explains, what question or limitation remains, and why B is the next concept that answers it. Do not place concepts side by side as an unconnected glossary.
-9. Use the right transition for the situation: knowledge dependency (`A is needed before B`), causal flow (`A produces the input B needs`), project evidence (`the project now shows B at this exact boundary`), or scope boundary (`B is related but deferred`).
-10. End with 1-3 learner questions that test a causal chain already taught. Let the learner explain before supplying a standard answer.
-11. Distinguish `[To understand]`, `[Explained]`, `[Practiced]`, and `[Verified]` when status helps; never call a concept mastered because it was mentioned.
-
-## Canonical Output Shape
-
-For a substantial first lesson, generate the same *kind* of finished lesson as [正确教学示例.md](references/正确教学示例.md), adapted to the current concept and project facts. Do not merely mention the stages or give an abbreviated scaffold.
-
-The response must normally contain these parts in this order:
+每个知识点开始时，先显示闯关状态，不直接进入正文：
 
 ```text
-concept title
-    -> 本节速览: the learner can see today’s conceptual map before details
-    -> 课前引入: observable behavior, prior knowledge, missing capability, why-question
-    -> numbered concept sections: definition, role, components, and boundaries
-    -> one smallest complete example, including normal and useful failure behavior
-    -> numbered project mapping: each stage tied to a limited source excerpt
-    -> current complete chain: generic terms and project terms mapped together
-    -> 当前学习边界: what was learned and what is deliberately deferred
-    -> 1-3 causal learner questions, followed by the natural next lesson
+项目：<项目名>
+主链路：<完整用户/系统链路>
+当前节点：<本节只处理的一个节点>
+当前关卡：教学阶段 / 源码阶段 / 面试阶段
+本节目标：<完成后能说清或验证什么>
+本节深度：深学 / 理解 / 能定位 / 暂时跳过
+已知连接：<以前学过的知识；只指出关系，不默认重新讲>
+本节不展开：<明确停车的旁支>
 ```
 
-Use short paragraphs, arrow chains, small tables, and focused code excerpts exactly when they clarify a causal step. Explain why each code excerpt matters before or immediately after showing it. Match the standard example’s progressive depth: do not replace explanations with headings, bullet labels, or code identifiers.
+阶段状态既要在每节课开头和结尾显示，也要在用户批准的学习进度文件中更新；如果用户还没有批准该文件的写法，只在对话中显示，不擅自创建或修改持久化记录。
 
-### Transition requirement
-
-The lesson must read as a connected explanation, not a sequence of independent sections. Before each new major concept, include a short bridge with this logic:
+一个知识点只有依次完成三关，才进入下一个知识点：
 
 ```text
-我们已经知道 A
-    -> A 仍然不能解释/完成 X
-    -> B 正好解决 X
-    -> 所以下面学习 B
+教学阶段 -> 源码阶段 -> 面试阶段 -> 知识点通关
 ```
 
-The bridge must name the relationship in plain language. For example:
+使用状态记录真实进度：
 
 ```text
-FastAPI 是 Web 框架，说明它负责统一处理 Web 工作；
-但我们还不知道它把一个具体请求交给哪个函数。
-因此下一步学习 app 和 path operation，它们描述这条“请求 -> 函数”的关系。
+[未开始] 尚未进入
+[教学中] 正在理解概念和最小代码
+[源码中] 正在把概念映射到真实项目
+[面试中] 正在复述和回答追问
+[待验证] 已解释但缺少运行、截图、测试或复述证据
+[已通关] 三关完成且证据已记录
 ```
 
-Do not use empty transitions such as “接下来我们看看另一个概念” or “下面继续学习相关内容”. If the next concept does not naturally follow, split the lesson or state the scope boundary instead.
+不要把“讲过”写成“已通关”。如果没有用户复述或实际证据，保持 `[待验证]`。
 
-## Required Boundaries
+## 二、标题和语言风格
 
-- Use a concrete title such as `【HTTP】请求、响应、JSON 与状态码`; do not title a lesson as a technology stack, a vague cooperation question, or an execution report.
-- Keep software teaching and domain teaching such as Bazi in separate lessons.
-- Do not assume a folder name, port, log line, framework name, or file extension is self-explanatory to a beginner.
-- Do not begin with repository inventories, dependency versions, health checks, file responsibility summaries, or raw terminal output.
-- Do not end a first teaching response immediately after asking “why”. The why-question creates the need for the lesson; it is not a replacement for the lesson.
-- Do not treat `本节速览` as a list of labels. It must preview the actual conceptual stages that the body will teach.
-- Do not produce a thin lesson with only a title, a generic chain, one code excerpt, and questions when the subject requires definitions, components, examples, project mapping, and a final mapped chain. Follow the canonical example’s finished-lesson depth.
-- Do not ask the learner to explain a causal chain that has not yet been supplied in generic form.
-- Do not present three or more major concepts as parallel definitions without explicit bridges showing their dependency, causal order, or boundary.
-- Do not use a transition sentence that merely announces the next heading; it must explain why the next concept is needed.
-- Do not use source identifiers as the lesson outline. A sequence such as `server.py -> index() -> FileResponse` is evidence only after the learner understands the generic responsibility chain.
-- Do not silently expand the lesson into API calls, SSE, Agent loops, RAG, UI components, or algorithms merely because the project contains them.
-- Do not give a polished AI implementation prompt before the learner has described the task and its likely ambiguities.
+标题必须让中文初学者一眼知道本节在学什么，使用类似下面的层级：
 
-## Task Anchor And Verification
+```markdown
+# 【FastAPI】应用对象、路由注册与接口处理函数
+## 一、本节属于哪条项目链路
+## 二、这个知识点解决什么问题
+### 1. 应用对象：谁负责接收请求
+### 2. 路由注册：请求如何找到函数
+## 三、用最小代码建立理解
+## 四、回到真实项目源码
+## 五、实际操作与截图观察
+## 六、工程化思考
+## 七、模拟面试
+## 八、本节通关检查
+```
 
-For a substantial lesson, establish the current task's goal, boundaries, done-when evidence, current evidence, open uncertainty, and next natural step. Use [task-anchor.md](references/task-anchor.md). Before closing, run [classroom-harness.md](references/classroom-harness.md) and [lesson-quality-gate.md](references/lesson-quality-gate.md).
+不要使用只有 `Node 1`、`Task A`、`Code Boundary` 这种无法表达知识内容的标题。正文使用直白中文；第一次出现的英文术语，先说明中文含义和它在当前项目中的作用。
 
-For maintenance and extension of this skill, read [skill-design.md](references/skill-design.md). It defines what belongs in the prompt, context, and harness layers.
+## 三、每个知识点固定三阶段
 
-## AI-Assisted Practice
+### 第一阶段：教学阶段
 
-After the relevant concept is taught:
+先说明：
 
-1. Ask the learner to describe the implementation task in their own words.
-2. Ask what the AI may misunderstand, omit, or over-expand.
-3. Inspect the first proposal for context, inputs, non-goals, constraints, uncertainty, and acceptance evidence.
-4. Let the learner judge the proposal before coding.
-5. Run and test the result; distinguish AI claims from observed evidence.
+```text
+知识点属于哪个技术体系（例如 FastAPI 的应用创建、路由、请求校验或响应）
+它解决什么工程问题
+它在当前主链中的位置
+它和已经学过的知识如何连接
+它的边界是什么，哪些相关内容本节不学
+```
 
-Read [ai-practice.md](references/ai-practice.md) when this stage is reached.
+概念必须和代码一起教：
 
-## Interview Stage
+- 真实代码很短且能直接看懂：直接使用项目中的片段。
+- 真实代码很长或噪声很多：先用最小自定义代码建立模型，再回到真实源码的关键片段。自定义代码是桥梁，不替代真实源码。
+- 解释代码时必须说明“为什么这样设计”，不能只逐行翻译“这行是什么意思”。
+- 每次最多引入当前链路必需的少量新概念；旁支写入停车项。
 
-Only after a complete topic and only when the learner provides a target role, enter role-grounded interview practice. Read [interview-stage.md](references/interview-stage.md); use current evidence when available and label synthesized questions honestly. Ask one question at a time and wait for the learner's answer.
+### 第二阶段：源码阶段
 
-## Final Check
+围绕一个真实行为跨文件追踪，不按单个文件从上到下通读。固定回答：
 
-Before claiming a lesson segment is complete, confirm:
+```text
+谁触发 -> 从哪个文件/函数进入 -> 输入是什么
+中间经过哪些文件/函数 -> 数据如何转换或保存
+输出是什么 -> 谁消费输出 -> 哪个条件会失败
+```
 
-- the title names one transferable knowledge system rather than a technology stack, file path, or vague question;
-- the opening behavior produces a specific missing-capability question;
-- the generic causal chain and minimal example appear before source identifiers;
-- each major concept is connected to the previous one by a meaningful transition that names the unresolved question or dependency;
-- the project mapping proves the already-explained chain rather than replacing it;
-- a normal path, applicable failure boundary, and out-of-scope systems are explicit;
-- the learner has a chance to explain a chain that was actually taught;
-- project evidence supports the concept and labels remaining uncertainty.
+源码教学还要指出适合初学者的工程实践：职责分层、数据契约、命名、调用顺序、日志、断点、最小测试、错误定位、修改影响范围、多人协作边界、部署后维护。只讲与当前节点相关的部分，不把每节变成软件工程百科全书。
 
-Do not add a generic checklist merely to fill space. If the learner is still reasoning or drafting a task, stop there.
+#### 跨文件代码对照规则
+
+知识点的范围由“业务关系或数据关系”决定，不默认由一个文件决定。只要一个关系跨越多个文件，必须把相关文件中的关键代码放在同一节中对照阅读，明确说明：
+
+```text
+文件 A 中的对象/参数
+-> 如何被导入、改名或包装
+-> 文件 B 中的注册/调用动作
+-> 最终形成的路径、事件、数据或运行结果
+```
+
+不要只分别解释“这个文件做什么”。必须先回答它们为什么要放在一起看，再展示最小相关代码。与当前关系无关的函数内部逻辑标记为“本节暂不展开”；只有它阻塞对象、参数或数据关系时才进入函数内部。
+
+每个跨文件知识点都要给出一张转换关系表：
+
+| 来源位置 | 名称/代码 | 转换或作用 | 传给谁 | 最终结果 |
+|---|---|---|---|---|
+| 文件 A | 对象或参数 | 导入、改名、注册或转换 | 文件 B 的对象/函数 | 请求、事件或数据结果 |
+
+链路图的节点标签要写“文件名/函数名 + 数据或事件”，不能用没有文字含义的箭头替代代码关系。
+
+#### 顺着调用深入后，必须做一次“这次我们串起来了什么？”
+
+真实项目的学习应当顺着代码逻辑逐层深入：正在讲的函数调用了另一个必须理解的函数，就进入那个函数；该函数又依赖另一个文件中的对象或配置，就继续进入。不要为了维持单文件讲解而跳过这种真实依赖关系。
+
+但深入后不能让学习者丢掉原来的问题。每当一条局部调用链已经解释到一个可收束的位置，使用下面这个标题把线索带回来：
+
+```markdown
+## 这次我们串起来了什么？
+```
+
+这个小节使用大白话和短段落或 Markdown 列表，不使用整块流程代码，也不机械地罗列“最初入口、遇到调用、进入文件、再次进入文件”。它应像讲一个小故事一样回答：
+
+- 我们本来正在看哪段代码；
+- 为什么必须顺着它进入另一个函数或文件；
+- 这次已经把哪些文件中的哪一小段职责连起来；
+- 回到原来的代码后，现在能解释什么；
+- 这个文件中还有哪些函数或细节没有学，它们会留到哪个后续节点；
+- 下一步回到哪一行或哪一个函数继续。
+
+不要把“看过 `storage/db.py`”写成“已经学完 `storage/db.py`”。必须精确到本次已理解的函数、代码段或职责，明确未展开的范围。
+
+例如，`server.py` 的 `_on_startup()` 调用 `storage/db.py` 的 `init_db()`，而 `init_db()` 又使用 `core/config.py` 的 `settings.db_path` 后，可以这样串联：
+
+```markdown
+## 这次我们串起来了什么？
+
+我们一开始是在看 `server.py` 里的 `_on_startup()`。它启动时要做一件事：让数据库先准备好。
+
+`_on_startup()` 自己不会创建数据库，所以我们顺着 `init_db()` 进入了 `storage/db.py`。不过 `init_db()` 还得先知道数据库放在哪里，于是又看了 `core/config.py`。
+
+- `core/config.py`：准备 `data` 目录，并写好 `suan.db` 这个数据库文件的位置。
+- `storage/db.py`：拿到这个位置，准备连接数据库。
+- `server.py`：等数据库准备完成后，才让应用继续启动。
+
+现在我们已经理解的是：三个文件怎样配合完成“启动前找到数据库”的准备工作。
+
+`storage/db.py` 里保存会话、读取数据的函数还没有学习；它们留到“会话和持久化”节点。下一步仍然回到 `init_db()`，看它连接数据库后怎样执行初始化脚本。
+```
+
+这属于一次局部回收和过渡，不替代一个节点全部完成后的“节点总结课”。局部串联用于防止单节课在深入依赖时断线；节点总结用于复盘整个节点的完整链路。
+
+#### 固定搭配和参数规则
+
+遇到框架、库或项目中的固定写法，必须同时给出：
+
+1. 当前项目真实代码片段；
+2. 这组代码中实际使用的参数、参数类型和作用；
+3. 当前知识点最常用且与排错/面试相关的参数；
+4. 参数的详细笔记双链接（如果用户已有对应笔记）；
+5. 本节哪些参数只列名字、暂不展开。
+
+使用下面的结构，避免把参数散落在逐行解释中：
+
+```markdown
+## 固定搭配
+```python
+app = FastAPI(title="...", version="2.0")
+```
+
+## 当前代码中的参数
+- `title`：类型、当前值、作用
+- `version`：类型、当前值、作用
+
+## 常用参数
+- 只列与当前关系有关的参数
+
+## 参数详细笔记
+[[【fastapi】参数的分类]]
+```
+
+双链接只用于导航和复习，不代表 AI 可以修改用户笔记。
+
+#### 源码顺序完整性规则
+
+在开始解释真实源码前，先列出当前知识点涉及的关键代码段，并标明它们在文件中的先后顺序。教学必须沿着这条顺序处理：
+
+```text
+代码段 1 -> 代码段 2 -> 代码段 3 -> 代码段 4
+```
+
+不得为了快速讲出最终结果而跳过中间代码。每一段关键代码都必须满足以下之一：
+
+- 当场解释它与当前数据/对象关系的作用；
+- 明确标记“本节暂不展开”，并说明为什么它不影响当前关系；
+- 放入后续明确的小知识点，说明将在什么位置继续处理。
+
+如果用户指出遗漏，立即回到遗漏代码在源码中的位置，补齐它与前后代码的连接；不得假设用户已经理解，也不得直接跳到下一段结果。只有当前顺序和边界交代清楚后，才进入运行验证、截图或面试阶段。
+
+一个链路节点下的知识点全部完成后，必须进行一次“节点总结课”。节点总结课不是每个知识点的第四阶段，而是把已完成的知识点重新串成整体：
+
+```text
+知识点课程：教学 -> 源码 -> 面试
+同一节点的知识点完成
+    -> 节点总结：知识关系 -> 跨文件总链路 -> 正常/失败路径 -> 工程复盘 -> 综合面试
+    -> 节点通关
+```
+
+节点总结课不默认引入新知识，重点是解释：知识点为什么属于同一个节点、数据如何跨文件流动、每个文件负责什么、节点如何连接下一个节点，以及此前是否留下理解缺口。只有知识点三关和节点总结证据都完成，才标记 `[节点已通关]`。
+
+节点总结课使用清晰的中文标题：
+
+```markdown
+# 【suan 主链节点总结】启动服务 -> 浏览器获得首页
+## 一、本节点在完整项目中的位置
+## 二、本节点已经学过的知识点
+## 三、知识点之间的关系
+## 四、跨文件调用链
+## 五、正常路径和失败路径
+## 六、节点级工程思维
+## 七、节点综合面试
+## 八、节点通关检查
+```
+
+必须给出带文字的链路图。优先使用 Mermaid；节点标签写清“文件名/函数名 + 数据或事件”，不能只画无说明的箭头。图必须服务于一次可读性：默认只画当前知识点或当前链路节点，使用短标签、少量节点和紧凑布局，避免一张图横向过长或需要滚动才能看完。完整主链和当前节点图分开画；如果完整链路确实很长，先给一张简短总览，再拆成多张局部图，不把所有文件塞进一张图：
+
+```mermaid
+sequenceDiagram
+    participant B as 浏览器
+    participant R as routes.py
+    participant A as agent.py
+    participant T as tools.py
+    B->>R: POST /charts
+    R->>A: 传入问题
+    A->>T: 请求工具
+    T-->>A: 返回结果
+    A-->>B: SSE 事件
+```
+
+### 第三阶段：面试阶段
+
+模拟面试必须总结前两阶段，不另起一套脱离项目的八股。至少覆盖：
+
+```text
+知识点问题：考察概念和边界
+源码问题：考察当前项目的真实调用链
+工程问题：考察测试、调试、失败、并发、维护或协作
+追问问题：改变规模、依赖不可用或需求变化后怎么办
+```
+
+先让用户回答，再评价：正确部分、缺失部分、项目证据、可改进的表达和下一层追问。不要直接替用户宣布“已经学会”。
+
+## 四、交互式实操和截图
+
+当浏览器、接口文档、Network、终端、日志或页面状态对理解有帮助时，不能只说“去看看”。要给出可执行观察任务：
+
+```text
+请打开：<具体地址或工具>
+请点击/输入/刷新：<具体动作>
+请观察：<具体区域和字段>
+请截屏：<必须包含的内容>
+请不要关注：<本节暂时跳过的区域>
+```
+
+用户提供截图后：
+
+- 指出先看哪里、后看哪里，解释页面各区域对应的概念和源码。
+- 如果视觉标注能明显降低理解成本，给截图加箭头、框选和中文标签；标注必须服务于解释，不做装饰图。
+- 把截图现象连接回请求、响应、状态、日志或代码位置。
+- 再让用户根据标注完成一次小观察或复述。
+
+如果无法直接看到用户屏幕，要明确说明需要哪些截图或文字观察结果，不假设用户已经看懂页面。
+
+## 五、已学知识的串联
+
+不因为新链路出现旧概念，就让用户回头完整重学。教学时直接点名：
+
+```text
+这个地方使用了你之前学过的【HTTP】请求体；
+请把它和当前的 FastAPI 参数模型对应起来。
+本节新增的是数据进入路由后的校验和转换。
+```
+
+只在旧知识真正阻塞当前代码时补最小缺口；完整补充留到后续更自然的场景。每节结束记录“本节连接到什么、以后还会在哪里出现”。
+
+## 六、调试与工程思维
+
+遇到 Bug，带用户按这条思路走，不直接让 AI 猜修复：
+
+```text
+复现 -> 记录输入和实际现象 -> 划分故障层
+-> 提出一个可验证假设 -> 做最小检查
+-> 修改最小范围 -> 重跑原问题 -> 增加回归证据
+```
+
+故障层可以是：启动、进程/端口、浏览器、HTTP、路由、校验、业务、Agent、工具、数据库、外部依赖或部署。必要时说明真实协作中的任务边界、接口契约、测试、Code Review、发布、回滚和维护，但只展开当前节点需要的工程判断。
+
+## 七、教学边界和用户决策权
+
+- 以用户批准的项目计划和顺序为准；不得自行改计划、改项目优先级或扩展交付目标。
+- 用户自己的“学习内容”和“源码学习”笔记只读不管：可以阅读、引用和指出关联，不重排、不改名、不归档、不代写。
+- 每节只处理一个小节点；完整主链由多个小节逐步完成。
+- 主项目工程学习与八字娱乐学习保持独立；只有在用户批准的连接点说明它们如何互相验证。
+- 当用户开始刨根问底时，明确告诉他当前问题属于“深学 / 理解 / 能定位 / 停车”，并说明不深入的理由。
+- 用户表达含糊时，先用一到三个具体反问校准目标、深度或可接受的教学方式，再继续。不要凭猜测改变教学协议。
+
+## 八、每节课的固定结尾
+
+```text
+本节关卡：教学阶段 [完成/待验证]
+源码阶段：[完成/待验证]
+面试阶段：[完成/待验证]
+本节证据：复述 / 截图 / 运行结果 / 日志 / 测试
+仍不确定：
+本节连接：
+下一节唯一任务：
+```
+
+只有三阶段和必要证据都完成，才把知识点标为 `[已通关]`，再进入相邻节点。
+
+节点总结完成后，额外记录：
+
+```text
+节点总结：[完成/待验证]
+节点级总链路：
+节点中的知识连接：
+正常路径证据：
+失败路径证据：
+节点综合面试结果：
+节点状态：[节点已通关/未通关]
+```
